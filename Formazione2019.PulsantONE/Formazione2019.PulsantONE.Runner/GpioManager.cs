@@ -18,7 +18,18 @@ namespace Formazione2019.PulsantONE.Runner
             _remoteService = new RemoteService();
             _httpCount = 0;
         }
-        
+
+        public async Task InitHub()
+        {
+            var connectionInfo = await _remoteService.Negotiate();
+            // todo capire come prendere le info da connection info e passare alle func successive
+
+            Console.WriteLine("Registering space ship");
+            var registrationResult = await _remoteService.Register();
+            if (!registrationResult)
+                Console.WriteLine("Registering space ship failed...");
+        }
+
         public void Run()
         {
             using (var gpioController = new GpioController())
@@ -47,10 +58,18 @@ namespace Formazione2019.PulsantONE.Runner
 
         private async Task OnButtonPushed()
         {
-            Console.WriteLine("Try moving space ship");
-            var (statusCode, reasonPhrase) = await _remoteService.MoveSpaceShip();
-            _httpCount++;
-            Console.WriteLine($"Status code: {statusCode} | Reason phrase: {reasonPhrase}");
+            Console.WriteLine("Try moving space ship!");
+
+            var result = await _remoteService.SendMessage();
+            if (result)
+            {
+                Console.WriteLine("Space ship has moved!");
+                _httpCount++;
+                return;
+            }
+
+            Console.WriteLine("Space ship has not moved...");
+
         }
     }
 }

@@ -5,6 +5,8 @@ namespace Formazione2019.PulsantONE.Runner
         static void Main(string[] args)
         {
             var gpioManager = new GpioManager();
+
+            gpioManager.InitHub().Wait();
             gpioManager.Run();
         }
     }

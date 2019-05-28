@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Formazione2019.PulsantONE.R
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Formazione2019.PulsantONE.Services", "Formazione2019.PulsantONE.Services\Formazione2019.PulsantONE.Services.csproj", "{B97EF7B9-39A5-4BC5-A3E8-C074D6D1B995}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Formazione2019.PulsantONE.AzureFuncs", "Formazione2019.PulsantONE.AzureFuncs\Formazione2019.PulsantONE.AzureFuncs.csproj", "{6A55F6A1-50D3-4973-9389-BDD6FC5FE67E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Formazione2019.PulsantONE.AzureFuncs", "Formazione2019.PulsantONE.AzureFuncs\Formazione2019.PulsantONE.AzureFuncs.csproj", "{6A55F6A1-50D3-4973-9389-BDD6FC5FE67E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

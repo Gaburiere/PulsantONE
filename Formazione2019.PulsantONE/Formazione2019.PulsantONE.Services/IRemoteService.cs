@@ -5,6 +5,8 @@ namespace Formazione2019.PulsantONE.Services
 {
     public interface IRemoteService
     {
-        Task<Tuple<string, string>> MoveSpaceShip();
+        Task<bool> SendMessage();
+        Task<object> Negotiate();
+        Task<bool> Register();
     }
 }
