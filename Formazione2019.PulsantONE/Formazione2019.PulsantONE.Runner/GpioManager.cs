@@ -1,33 +1,54 @@
 ﻿using System;
 using System.Device.Gpio;
-using System.Threading.Tasks;
 using Formazione2019.PulsantONE.Services;
+using Formazione2019.PulsantONE.Services.Classes;
 using Formazione2019.PulsantONE.Services.Impl;
 
 namespace Formazione2019.PulsantONE.Runner
 {
     public class GpioManager
     {
-        private readonly IRemoteService _remoteService;
+        private readonly IHubService _hubService;
         private const int PushButton33VoltPin = 10;
         private const int PushButtonGpioPin = 3;
-        private int _httpCount;
+        private bool _registered;
+        private bool _isInRun;
 
         public GpioManager()
         {
-            _remoteService = new RemoteService();
-            _httpCount = 0;
+            _hubService = new HubService();
+            
+            _hubService.OnGameStateReceived += (sender, state) =>
+            {
+                switch (state)
+                {
+                    case GameState.Register:
+                        _hubService.Register();
+                        break;
+                    case GameState.InRun:
+                        _isInRun = true;
+                        break;
+                    case GameState.Closed:
+                        break;
+                    case GameState.Finished:
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException(nameof(state), state, null);
+                }
+            };
+
+            _hubService.OnRegisterResult += (sender, registered) =>
+            {
+                if (registered)
+                    _registered = true;
+            };
         }
 
-        public async Task InitHub()
+        public void InitHub()
         {
-            var connectionInfo = await _remoteService.Negotiate();
-            // todo capire come prendere le info da connection info e passare alle func successive
-
-            Console.WriteLine("Registering space ship");
-            var registrationResult = await _remoteService.Register();
-            if (!registrationResult)
-                Console.WriteLine("Registering space ship failed...");
+            Console.WriteLine("Connecting to hub...");
+            _hubService.Connect();
+            Console.WriteLine("Connection succeeded.");
         }
 
         public void Run()
@@ -42,7 +63,7 @@ namespace Formazione2019.PulsantONE.Runner
                 gpioController.Write(10, PinValue.Low);
 
                 Console.WriteLine($"Listening pin {PushButton33VoltPin} event type Rising");
-                gpioController.RegisterCallbackForPinValueChangedEvent(10, PinEventTypes.Rising, async (sender, eventArgs) => await OnButtonPushed());
+                gpioController.RegisterCallbackForPinValueChangedEvent(10, PinEventTypes.Rising,  (sender, eventArgs) => OnButtonPushed());
 
                 Console.WriteLine("Push enter to quit.");
 
@@ -56,17 +77,13 @@ namespace Formazione2019.PulsantONE.Runner
             }
         }
 
-        private async Task OnButtonPushed()
+        private void OnButtonPushed()
         {
+            if (!_registered || !_isInRun) return;
+            
             Console.WriteLine("Try moving space ship!");
 
-            var result = await _remoteService.SendMessage();
-            if (result)
-            {
-                Console.WriteLine("Space ship has moved!");
-                _httpCount++;
-                return;
-            }
+            _hubService.SendMessage();
 
             Console.WriteLine("Space ship has not moved...");
 

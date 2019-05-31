@@ -7,8 +7,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Formazione2019.PulsantONE.R
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Formazione2019.PulsantONE.Services", "Formazione2019.PulsantONE.Services\Formazione2019.PulsantONE.Services.csproj", "{B97EF7B9-39A5-4BC5-A3E8-C074D6D1B995}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Formazione2019.PulsantONE.AzureFuncs", "Formazione2019.PulsantONE.AzureFuncs\Formazione2019.PulsantONE.AzureFuncs.csproj", "{6A55F6A1-50D3-4973-9389-BDD6FC5FE67E}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,10 +21,6 @@ Global
 		{B97EF7B9-39A5-4BC5-A3E8-C074D6D1B995}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B97EF7B9-39A5-4BC5-A3E8-C074D6D1B995}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B97EF7B9-39A5-4BC5-A3E8-C074D6D1B995}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6A55F6A1-50D3-4973-9389-BDD6FC5FE67E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6A55F6A1-50D3-4973-9389-BDD6FC5FE67E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6A55F6A1-50D3-4973-9389-BDD6FC5FE67E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6A55F6A1-50D3-4973-9389-BDD6FC5FE67E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

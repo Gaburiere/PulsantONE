@@ -1,0 +1,24 @@
+using System;
+using System.Threading.Tasks;
+using Formazione2019.PulsantONE.Services.Classes;
+using Microsoft.AspNetCore.SignalR.Client;
+
+namespace Formazione2019.PulsantONE.Services
+{
+    public interface IHubService
+    {
+        /// <summary>
+        /// Hub
+        /// </summary>
+        HubConnection Connection { get; }
+
+        void Connect();
+        void Register();
+
+        void SendMessage();    
+        
+
+        event EventHandler<GameState> OnGameStateReceived;
+        event EventHandler<bool> OnRegisterResult;
+    }
+}
