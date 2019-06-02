@@ -2,16 +2,51 @@
 
     <PropertyGroup>
         <OutputType>Exe</OutputType>
-        <TargetFramework>netcoreapp2.2</TargetFramework>
+        <TargetFramework>netcoreapp3.0</TargetFramework>
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="Iot.Device.Bindings" Version="0.1.0-prerelease.19171.3" />
       <PackageReference Include="System.Device.Gpio" Version="0.1.0-prerelease.19171.3" />
     </ItemGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\Formazione2019.PulsantONE.Services\Formazione2019.PulsantONE.Services.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <_UnmanagedRegistrationCache Remove="obj\Formazione2019.PulsantONE.Runner.csproj.UnmanagedRegistration.cache" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <_ResolveComReferenceCache Remove="obj\Debug\netcoreapp3.0\Formazione2019.PulsantONE.Runner.csproj.ResolveComReference.cache" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <IntermediateAssembly Remove="obj\Debug\netcoreapp3.0\Formazione2019.PulsantONE.Runner.dll" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <_DebugSymbolsIntermediatePath Remove="obj\Debug\netcoreapp3.0\Formazione2019.PulsantONE.Runner.pdb" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <_DeploymentManifestEntryPoint Remove="obj\Debug\netcoreapp3.0\Formazione2019.PulsantONE.Runner.dll" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ApplicationManifest Remove="obj\Debug\netcoreapp3.0\Formazione2019.PulsantONE.Runner.dll.manifest" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <DeployManifest Remove="obj\Debug\netcoreapp3.0\Formazione2019.PulsantONE.Runner.application" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ClsidMap Remove="obj\Debug\netcoreapp3.0\Formazione2019.PulsantONE.Runner.clsidmap" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <RegFreeComManifest Remove="obj\Debug\netcoreapp3.0\Formazione2019.PulsantONE.Runner.X.manifest" />
     </ItemGroup>
 
 </Project>
