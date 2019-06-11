@@ -13,9 +13,9 @@ namespace Formazione2019.PulsantONE.Services
         HubConnection Connection { get; }
 
         Task Connect();
-        void Register();
+        Task Register();
 
-        void SendMessage();    
+        Task SendMessage();    
         
 
         event EventHandler<GameState> OnGameStateReceived;

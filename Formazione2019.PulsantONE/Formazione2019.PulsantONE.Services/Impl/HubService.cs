@@ -15,24 +15,33 @@ namespace Formazione2019.PulsantONE.Services.Impl
                 .Build();
             
             Connection.On("gameStateMode",
-                new Action<GameState>(gameState => { OnGameStateReceived?.Invoke(this, gameState); }));
+                new Action<GameState>(gameState =>
+                {
+                    Console.WriteLine("Invoking OnGameStateReceived");
+                    OnGameStateReceived?.Invoke(this, gameState);
+                }));
 
             Connection.On("registerResult",
-                new Action<bool>(registered => { OnRegisterResult?.Invoke(this, registered); }));
+                new Action<bool>(registered =>
+                {
+                    Console.WriteLine("Invoking OnRegisterResult");
+                    OnRegisterResult?.Invoke(this, registered);
+                }));
             
             Connection.Closed += exception => Task.Run(() => OnConnectionLost?.Invoke(this,null));  //.OnClose(error => this.OnConnectionLost?.Invoke(this,null));
 
+            Console.WriteLine("Trying starting connection...");
             await Connection.StartAsync();
         }
 
-        public void Register()
+        public async Task Register()
         { 
-            Connection.SendAsync("register","Bariere's RaspberryPI 2+","Space-X").ConfigureAwait(false);
+            await Connection.SendAsync("register","Bariere's RaspberryPI 2+",Guid.Parse("0D2C37F7-49FE-48D9-A1D3-1A90E7948BCC"));
         }
 
-        public void SendMessage()
+        public async Task SendMessage()
         {
-            Connection.SendAsync("tap").ConfigureAwait(false);
+            await Connection.SendAsync("tap").ConfigureAwait(false);
         }
 
         public event EventHandler<GameState> OnGameStateReceived;
