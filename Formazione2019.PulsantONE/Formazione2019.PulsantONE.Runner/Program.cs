@@ -15,9 +15,11 @@ namespace Formazione2019.PulsantONE.Runner
             }
             catch (Exception e)
             {
+                Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine(e);
                 Console.WriteLine(e.Message);
                 Console.WriteLine(e.StackTrace);
+                Console.ResetColor();
             }
         }
     }

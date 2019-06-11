@@ -12,7 +12,7 @@ namespace Formazione2019.PulsantONE.Services
         /// </summary>
         HubConnection Connection { get; }
 
-        void Connect();
+        Task Connect();
         void Register();
 
         void SendMessage();    
@@ -20,5 +20,6 @@ namespace Formazione2019.PulsantONE.Services
 
         event EventHandler<GameState> OnGameStateReceived;
         event EventHandler<bool> OnRegisterResult;
+        event EventHandler OnConnectionLost;
     }
 }

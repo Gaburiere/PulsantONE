@@ -14,6 +14,7 @@ namespace Formazione2019.PulsantONE.Runner
         private const int PushButtonGpioPin = 18;
         private bool _registered;
         private bool _isInRun;
+        private PinValue _lastGpioValue;
 
         public GpioManager()
         {
@@ -24,9 +25,11 @@ namespace Formazione2019.PulsantONE.Runner
                 switch (state)
                 {
                     case GameState.Register:
+                        Console.WriteLine("Hub has opened registrations!");
                         _hubService.Register();
                         break;
                     case GameState.InRun:
+                        Console.WriteLine("Hub has started the game!");
                         _isInRun = true;
                         break;
                     case GameState.Closed:
@@ -40,8 +43,16 @@ namespace Formazione2019.PulsantONE.Runner
 
             _hubService.OnRegisterResult += (sender, registered) =>
             {
+                Console.WriteLine("Client has been registered!");
                 if (registered)
                     _registered = true;
+            };
+
+            _hubService.OnConnectionLost += (sender, args) =>
+            {
+                Console.WriteLine("Hub connection has been closed");
+                _isInRun = false;
+                _registered = false;
             };
         }
 
@@ -59,60 +70,67 @@ namespace Formazione2019.PulsantONE.Runner
         {
             using (var gpioController = new GpioController())
             { 
+                _lastGpioValue = PinValue.High;
 
-                //Set pin 10 to be an input pin and set initial value to be pulled low (off)
+                //Set pin 10 to be an input pin and set initial value to be pulled up (off)
                 Console.WriteLine($"Setting pin {PushButtonGpioPin} to input pull up mode");
                 gpioController.OpenPin(PushButtonGpioPin, PinMode.InputPullUp);
 
                 if(!gpioController.IsPinOpen(PushButtonGpioPin))
                     throw new InvalidOperationException($"Can't open pin {PushButtonGpioPin} in mode {PinMode.InputPullUp}");
                 
-                //Console.WriteLine($"Setting pin {PushButton3dot3VoltPin} initial value to Low");
-                //gpioController.Write(PushButton3dot3VoltPin, PinValue.Low);
-
                 //Console.WriteLine($"Listening pin {PushButton3dot3VoltPin} event type Rising");
-                //gpioController.RegisterCallbackForPinValueChangedEvent(10, PinEventTypes.Rising,  (sender, eventArgs) => OnButtonPushed());
+//                gpioController.RegisterCallbackForPinValueChangedEvent(PushButtonGpioPin, PinEventTypes.Falling,  (sender, eventArgs) => OnButtonPushed());
 
                 var initialState = gpioController.Read(PushButtonGpioPin);
                 Console.WriteLine($"Gpio pin {PushButtonGpioPin} initial state: {initialState}");
 
                 while (true)
                 {
-                    var gpioValue = gpioController.Read(PushButtonGpioPin);
-
-                    if(gpioValue == PinValue.High)
-                        Console.WriteLine("Button pin value high!");
-                    else
-                        Console.WriteLine("Button pin value low!");
-
+                    DebounceButton(gpioController);
                     Thread.Sleep(50);
                 }
-
-                Console.WriteLine("Push enter to quit.");
-
-                var enterPushed = false;
-                while (!enterPushed)
-                {
-                    var read = Console.ReadKey(true);
-                    if (read.Key == ConsoleKey.Enter)
-                        enterPushed = true;
-                }
             }
+        }
+
+        private void DebounceButton(GpioController gpioController)
+        {
+            var gpioValue = gpioController.Read(PushButtonGpioPin);
+
+            if (gpioValue == PinValue.High && _lastGpioValue == PinValue.High)
+                return;
+            if (gpioValue == PinValue.Low && _lastGpioValue == PinValue.High)
+            {
+                Console.WriteLine("Button pushed!");
+                OnButtonPushed();
+            }
+
+            if (gpioValue == PinValue.Low && _lastGpioValue == PinValue.Low)
+                return;
+            if (gpioValue == PinValue.High && _lastGpioValue == PinValue.Low)
+                Console.WriteLine("Button released!");
+            _lastGpioValue = gpioValue;
         }
 
         private void OnButtonPushed()
         {
-            if (!_registered) 
+            if (!_registered)
             {
-                Console.WriteLine($"Client is not registered -_-");
+                Console.WriteLine("Client is not registered -_-");
                 return;
             }
-            
+
+            if (_registered && !_isInRun)
+            {
+                Console.WriteLine("Game no started yet...");
+                return;
+            }
+        
             Console.WriteLine("Try moving space ship!");
 
             _hubService.SendMessage();
 
-            Console.WriteLine("Space ship has not moved...");
         }
+      
     }
 }
