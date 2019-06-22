@@ -19,7 +19,11 @@ namespace Formazione2019.PulsantONE.Runner
         public GpioManager()
         {
             _hubService = new HubService();
-            
+            RegisterEvents();
+        }
+
+        private void RegisterEvents()
+        {
             _hubService.OnGameStateReceived += (sender, state) =>
             {
                 switch (state)
@@ -129,6 +133,7 @@ namespace Formazione2019.PulsantONE.Runner
             Console.WriteLine("Try moving space ship!");
 
             _hubService.SendMessage();
+            Console.WriteLine("Message hopefully sent!");
 
         }
       

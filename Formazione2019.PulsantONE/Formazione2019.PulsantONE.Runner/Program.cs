@@ -8,8 +8,8 @@ namespace Formazione2019.PulsantONE.Runner
         {
             try
             {
+                Console.WriteLine($"Attempt of {DateTime.Now}");
                 var gpioManager = new GpioManager();
-
                 gpioManager.InitHub();
                 gpioManager.Run();
             }

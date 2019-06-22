@@ -28,8 +28,7 @@ namespace Formazione2019.PulsantONE.Services.Impl
                     OnRegisterResult?.Invoke(this, registered);
                 }));
             
-            Connection.Closed += exception => Task.Run(() => OnConnectionLost?.Invoke(this,null));  //.OnClose(error => this.OnConnectionLost?.Invoke(this,null));
-
+            Connection.Closed += exception => Task.Run(() => OnConnectionLost?.Invoke(this,null)); 
             Console.WriteLine("Trying starting connection...");
             await Connection.StartAsync();
         }
