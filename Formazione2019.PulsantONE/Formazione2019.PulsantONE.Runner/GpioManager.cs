@@ -37,8 +37,14 @@ namespace Formazione2019.PulsantONE.Runner
                         _isInRun = true;
                         break;
                     case GameState.Closed:
+                        Console.ForegroundColor = ConsoleColor.Yellow;
+                        Console.WriteLine("Connection was closed!");
+                        Console.ResetColor();
                         break;
                     case GameState.Finished:
+                        Console.ForegroundColor = ConsoleColor.Green;
+                        Console.WriteLine("Raspberry wins!");
+                        Console.ResetColor();
                         break;
                     default:
                         throw new ArgumentOutOfRangeException(nameof(state), state, null);
