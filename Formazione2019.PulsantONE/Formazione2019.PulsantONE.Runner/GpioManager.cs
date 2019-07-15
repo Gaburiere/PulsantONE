@@ -15,6 +15,7 @@ namespace Formazione2019.PulsantONE.Runner
         private bool _registered;
         private bool _isInRun;
         private PinValue _lastGpioValue;
+        private bool _gameFinished;
 
         public GpioManager()
         {
@@ -24,13 +25,13 @@ namespace Formazione2019.PulsantONE.Runner
 
         private void RegisterEvents()
         {
-            _hubService.OnGameStateReceived += (sender, state) =>
+            _hubService.OnGameStateReceived += async (sender, state) =>
             {
                 switch (state)
                 {
                     case GameState.Register:
                         Console.WriteLine("Hub has opened registrations!");
-                        _hubService.Register();
+                        await _hubService.Register();
                         break;
                     case GameState.InRun:
                         Console.WriteLine("Hub has started the game!");
@@ -43,7 +44,8 @@ namespace Formazione2019.PulsantONE.Runner
                         break;
                     case GameState.Finished:
                         Console.ForegroundColor = ConsoleColor.Green;
-                        Console.WriteLine("Raspberry wins!");
+                        Console.WriteLine("Game is over!");
+                        _gameFinished = true;
                         Console.ResetColor();
                         break;
                     default:
@@ -53,7 +55,10 @@ namespace Formazione2019.PulsantONE.Runner
 
             _hubService.OnRegisterResult += (sender, registered) =>
             {
+                Console.ForegroundColor = ConsoleColor.Green;
                 Console.WriteLine("Client has been registered!");
+                Console.ResetColor();
+
                 if (registered)
                     _registered = true;
             };
@@ -72,8 +77,10 @@ namespace Formazione2019.PulsantONE.Runner
             _hubService.Connect();
             if(_hubService.Connection == null)
                 throw new InvalidOperationException($"Can't connect to hub -_-");
-
+            Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine("Connection succeeded.");
+            Console.ResetColor();
+
         }
 
         public void Run()
@@ -97,6 +104,7 @@ namespace Formazione2019.PulsantONE.Runner
 
                 while (true)
                 {
+                    if (_gameFinished) return;
                     DebounceButton(gpioController);
                     Thread.Sleep(50);
                 }
